@@ -1,0 +1,25 @@
+{
+  "name": "any-services",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www",
+    "dev": "nodemon ./bin/www"
+  },
+  "dependencies": {
+    "bcrypt": "^3.0.6",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.9",
+    "dotenv": "^8.0.0",
+    "express": "~4.16.0",
+    "express-sanitizer": "^1.0.5",
+    "express-validator": "^5.3.1",
+    "morgan": "~1.9.0",
+    "mysql2": "^1.6.5",
+    "oauth2orize": "^1.11.0",
+    "passport": "^0.4.0",
+    "passport-jwt": "^4.0.0",
+    "require-all": "^3.0.0",
+    "sequelize": "^5.8.4"
+  }
+}
