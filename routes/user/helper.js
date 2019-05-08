@@ -6,7 +6,7 @@ const app = express()
 var saltRounds = 10
 
 module.exports = {
-  genPassword(req, res, next) {
+  hashPassword(req, res, next) {
     bcrypt.genSalt(saltRounds, (err, salt) => {
       if (err) return res.send(err)
       req.salt = salt

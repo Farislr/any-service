@@ -1,10 +1,15 @@
 const express = require('express')
+const passport = require('passport')
 const db = require('../../models')
-const { genPassword } = require('./helper')
+const { hashPassword } = require('./helper')
 
-const route = express.Router()
+const router = express.Router()
 
-route.post('/register',[genPassword], (req, res) => {
+router.get('/', passport.authenticate('jwt', { session: false }), (req, res) => {
+    res.send(req.user);
+})
+
+router.post('/register', [hashPassword], (req, res) => {
   db.user.create({
     name: req.body.name,
     email: req.body.email,
@@ -13,19 +18,12 @@ route.post('/register',[genPassword], (req, res) => {
     is_confirmed: 0,
     salt: req.salt
   }).then(val => {
-    res.send(val);
-  })
-})
-
-route.post('/login', (req, res) => {
-  
-})
-
-route.get('/', (req, res) => {
-  db.user.findAll()
-  .then(val => {
     res.send(val)
   })
 })
 
-module.exports = route
+router.post('/login', passport.authenticate('local', { session: false }), (req, res) => {
+    res.send(req.user)
+})
+
+module.exports = router
