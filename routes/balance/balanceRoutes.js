@@ -37,7 +37,11 @@ router.get('/', paginate.middleware(10, 25), (req, res) => {
 
 router.get('/:id', (req, res) => {
   db.balance
-    .findByPk(req.params.id, {
+    .findOne({
+      where: {
+        id: req.params.id,
+        user_id: req.user.id,
+      },
       include: [
         {
           model: db.flow,
@@ -46,8 +50,31 @@ router.get('/:id', (req, res) => {
       ],
     })
     .then(balance => {
-      if (!balance) return res.sendStatus(400)
+      if (!balance)
+        return res.status(400).send({ message: 'Balance not found' })
       res.send(balance)
+    })
+})
+
+router.patch('/:id/update-amount', (req, res) => {
+  const { body, params, user } = req
+  db.balance
+    .update(
+      {
+        amount: body.amount,
+      },
+      {
+        where: {
+          id: params.id,
+          user_id: user.id,
+        },
+      }
+    )
+    .then(balance => {
+      if (!balance)
+        return res.status(400).send({ message: 'Balance not found' })
+
+      return res.status(200).send(balance)
     })
 })
 

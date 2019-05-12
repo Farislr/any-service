@@ -13,15 +13,38 @@ router.use(
   }
 )
 
+router.get('/:id', (req, res) => {
+  db.flow
+    .findAndCountAll({
+      include: [
+        {
+          model: db.balance,
+          attributes: [],
+          where: {
+            id: req.params.id,
+            user_id: req.user.id,
+          },
+        },
+      ],
+    })
+    .then(flow => {
+      return res.send(flow)
+    })
+})
+
 router.post('/:id/add', (req, res) => {
   const { body, params } = req
   db.balance
     .findOne({
       where: {
         id: params.id,
+        user_id: req.user.id,
       },
     })
     .then(balance => {
+      if (!balance)
+        return res.status(400).json({ message: 'Balance not found' })
+
       db.flow
         .create({
           description: body.description,
@@ -30,7 +53,7 @@ router.post('/:id/add', (req, res) => {
         })
         .then(flow => {
           balance.addFlows(flow.id).then(() => {
-            res.send(flow)
+            return res.send(flow)
           })
         })
     })

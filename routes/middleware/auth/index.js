@@ -6,8 +6,9 @@ const passport = require('passport'),
 
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const { env } = process
 
-const jwtToken = 'JwtSecret'
+const jwtToken = env.JWT_SECRET
 
 let opts = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
