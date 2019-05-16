@@ -1,7 +1,7 @@
 const express = require('express')
 const db = require('../../models')
 const passport = require('passport')
-const paginate = require('express-paginate')
+const { getAll, getOne } = require('../../services/crud')
 
 let router = express.Router()
 
@@ -14,47 +14,23 @@ router.use(
   }
 )
 
-router.get('/', paginate.middleware(10, 25), (req, res) => {
-  db.balance
-    .findAndCountAll({
-      limit: req.query.limit,
-      offset: req.skip,
-      where: {
-        user_id: req.user.id,
-      },
-    })
-    .then(balance => {
-      const pages_count = Math.ceil(balance.count / req.query.limit)
-      let output = {
-        data: balance.rows,
-        item_count: balance.count,
-        pages_count,
-        pages: paginate.getArrayPages(req)(3, pages_count, req.query.page),
-      }
-      res.send(output)
-    })
-})
+router.get('/', getAll(db.balance))
 
-router.get('/:id', (req, res) => {
-  db.balance
-    .findOne({
-      where: {
-        id: req.params.id,
-        user_id: req.user.id,
-      },
+router.get(
+  '/:id',
+  getOne(
+    db.balance,
+    {
       include: [
         {
           model: db.flow,
           through: { attributes: [] },
         },
       ],
-    })
-    .then(balance => {
-      if (!balance)
-        return res.status(400).send({ message: 'Balance not found' })
-      res.send(balance)
-    })
-})
+    },
+    'Balance not found'
+  )
+)
 
 router.patch('/:id/update-amount', (req, res) => {
   const { body, params, user } = req

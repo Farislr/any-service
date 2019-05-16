@@ -1,9 +1,9 @@
 require('dotenv').config()
 var express = require('express')
-var path = require('path')
 var cookieParser = require('cookie-parser')
 var logger = require('morgan')
 var passport = require('passport')
+const paginate = require('express-paginate')
 
 var app = express()
 
@@ -15,6 +15,7 @@ app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(passport.initialize())
 app.use(passport.session())
+app.use(paginate.middleware(15, 25))
 
 require('./routes/middleware/auth')
 
