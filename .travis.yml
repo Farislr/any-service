@@ -10,5 +10,5 @@ before_install:
   - ssh-add ./deploy_key
   - ssh -i ./deploy_key farislr@ssh.acite.net pwd
 install:
-  - bash git pull
-  - bash pm2 reload all
+  - git pull
+  - pm2 reload all
