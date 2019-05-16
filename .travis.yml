@@ -10,5 +10,5 @@ before_install:
   - ssh-add ./deploy_key
   - ssh -i ./deploy_key farislr@ssh.acite.net pwd
 install:
-  - git pull
-  - pm2 reload all
+  - ssh -i ./deploy_key farislr@ssh.acite.net cd ~/app/any-service/ && git pull
+  - ssh -i ./deploy_key farislr@ssh.acite.net pm2 reload all
