@@ -9,5 +9,6 @@ const router = express.Router()
 router.use('/user', services.user.userRoutes)
 router.use('/balance', services.balance.balanceRoutes)
 router.use('/flow', services.flow.flowRoutes)
+router.use('/promotion', services.promotion.promotionRoutes)
 
 module.exports = router
