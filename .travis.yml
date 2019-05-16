@@ -9,4 +9,4 @@ before_install:
   - echo -e "Host ssh.acite.net\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
   - ssh-add ./deploy_key
   - ssh -i ./deploy_key farislr@ssh.acite.net pwd
-  - ssh -i ./deploy_key farislr@ssh.acite.net pm2 reload all
+  - ssh -i ./deploy_key farislr@ssh.acite.net "pm2 reload all"
