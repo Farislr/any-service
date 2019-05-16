@@ -11,6 +11,6 @@ after_success:
   - ssh -i ./deploy_key farislr@ssh.acite.net pwd
 deploy:
  - provider: script
-    script: deploy_production.sh
+   script: deploy_production.sh
     on:
-      branch: master
+     branch: master
