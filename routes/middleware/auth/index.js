@@ -34,7 +34,6 @@ passport.use(
 
 passport.use(
   new LocalStrategy({ usernameField: 'email' }, (username, password, done) => {
-    console.log('local strategy')
     db.user
       .findOne({
         where: {

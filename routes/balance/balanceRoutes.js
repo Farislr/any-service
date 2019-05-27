@@ -1,7 +1,7 @@
 const express = require('express')
 const db = require('../../models')
 const passport = require('passport')
-const { getAll, getOne } = require('../../services/crud')
+const { getAll, getOne, update, create } = require('../../services/crud')
 
 let router = express.Router()
 
@@ -14,13 +14,23 @@ router.use(
   }
 )
 
-router.get('/', getAll(db.balance))
+router.get('/', (req, res) =>
+  getAll(req, res, db.balance, {
+    where: {
+      user_id: req.user.id,
+    },
+  })
+)
 
-router.get(
-  '/:id',
+router.get('/:id', (req, res) =>
   getOne(
+    req,
+    res,
     db.balance,
     {
+      where: {
+        user_id: req.user.id,
+      },
       include: [
         {
           model: db.flow,
@@ -32,39 +42,8 @@ router.get(
   )
 )
 
-router.patch('/:id/update-amount', (req, res) => {
-  const { body, params, user } = req
-  db.balance
-    .update(
-      {
-        amount: body.amount,
-      },
-      {
-        where: {
-          id: params.id,
-          user_id: user.id,
-        },
-      }
-    )
-    .then(balance => {
-      if (!balance)
-        return res.status(400).send({ message: 'Balance not found' })
+router.patch('/:id/update-amount', (req, res) => update(req, res, db.balance))
 
-      return res.status(200).send(balance)
-    })
-})
-
-router.post('/', (req, res) => {
-  db.balance
-    .create({
-      user_id: req.user.id,
-      name: req.body.name,
-      description: req.body.description,
-      amount: 0,
-    })
-    .then(balance => {
-      res.send(balance)
-    })
-})
+router.post('/', (req, res) => create(req, res, db.balance, { amount: 0 }))
 
 module.exports = router

@@ -1,6 +1,7 @@
 const express = require('express')
 const db = require('../../models')
 const passport = require('passport')
+const { getAll } = require('../../services/crud')
 
 let router = express.Router()
 
@@ -13,24 +14,20 @@ router.use(
   }
 )
 
-router.get('/:id', (req, res) => {
-  db.flow
-    .findAndCountAll({
-      include: [
-        {
-          model: db.balance,
-          attributes: [],
-          where: {
-            id: req.params.id,
-            user_id: req.user.id,
-          },
+router.get('/:id', (req, res) =>
+  getAll(req, res, db.flow, {
+    include: [
+      {
+        model: db.balance,
+        attributes: [],
+        where: {
+          id: req.params.id,
+          user_id: req.user.id,
         },
-      ],
-    })
-    .then(flow => {
-      return res.send(flow)
-    })
-})
+      },
+    ],
+  })
+)
 
 router.post('/:id/add', (req, res) => {
   const { body, params } = req

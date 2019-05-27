@@ -2,6 +2,7 @@ const express = require('express')
 const passport = require('passport')
 const db = require('../../models')
 const { hashPassword } = require('./helper')
+const { create } = require('../../services/crud')
 
 const router = express.Router()
 
@@ -13,20 +14,9 @@ router.get(
   }
 )
 
-router.post('/register', [hashPassword], (req, res) => {
-  db.user
-    .create({
-      name: req.body.name,
-      email: req.body.email,
-      password: req.body.password,
-      is_active: 1,
-      is_confirmed: 0,
-      salt: req.salt,
-    })
-    .then(user => {
-      res.send(user)
-    })
-})
+router.post('/register', [hashPassword], (req, res) =>
+  create(req, res, db.user, { is_active: 1, is_confirmed: 0, salt: req.salt })
+)
 
 router.post(
   '/login',
