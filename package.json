@@ -26,6 +26,7 @@
     "mysql2": "^1.6.5",
     "oauth2orize": "^1.11.0",
     "passport": "^0.4.0",
+    "passport-google-oauth": "^2.0.0",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
     "require-all": "^3.0.0",

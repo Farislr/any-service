@@ -36,12 +36,35 @@ module.exports = {
     }
   },
   create(model, options = {}) {
-    return (req, res) => {}
+    return (req, res) => {
+      model.create(req.body, options).then(out => {
+        if (!out) return res.status(400).send('err')
+        res.send(out)
+      })
+    }
   },
-  update(model, options = {}) {
-    return (req, res) => {}
+  update(model, data, options = {}) {
+    return (req, res) => {
+      options = Object.assign(options, {
+        where: {
+          id: req.params.id,
+          user_id: req.user.id,
+        },
+      })
+      model.update(data, options).then(out => {
+        res.send(out)
+      })
+    }
   },
   delete(model, options = {}) {
-    return (req, res) => {}
+    return (req, res) => {
+      options = Object.assign(options, {
+        where: {
+          id: req.params.id,
+          user_id: req.user.id,
+        },
+      })
+      model.delete(options).then(out => res.send(out))
+    }
   },
 }
