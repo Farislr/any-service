@@ -8,6 +8,8 @@
     "test": "echo testing ..."
   },
   "dependencies": {
+    "@cubejs-backend/mysql-driver": "^0.9.2",
+    "@cubejs-backend/server-core": "^0.9.2",
     "@types/sequelize": "^4.27.49",
     "bcrypt": "^3.0.6",
     "connect-flash": "^0.1.1",
