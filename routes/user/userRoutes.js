@@ -23,7 +23,8 @@ router.get(
   '/google/callback',
   passport.authenticate('google', { session: false }),
   (req, res) => {
-    res.send(req.user)
+    res.set('X-TOKEN', req.user.token)
+    res.send('<div>Loading...</div>')
   }
 )
 

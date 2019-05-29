@@ -48,6 +48,7 @@ passport.use(
               email: email.value,
             },
             defaults: {
+              name: profile.displayName,
               is_active: 1,
               is_confirmed: 0,
             },
