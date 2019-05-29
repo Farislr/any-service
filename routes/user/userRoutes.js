@@ -14,6 +14,19 @@ router.get(
   }
 )
 
+router.get(
+  '/google',
+  passport.authenticate('google', { scope: ['email', 'profile'] })
+)
+
+router.get(
+  '/google/callback',
+  passport.authenticate('google', { session: false }),
+  (req, res) => {
+    res.send(req.user)
+  }
+)
+
 router.post('/register', [hashPassword], (req, res) =>
   create(req, res, db.user, { is_active: 1, is_confirmed: 0, salt: req.salt })
 )

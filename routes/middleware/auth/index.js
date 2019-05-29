@@ -2,6 +2,7 @@ const passport = require('passport'),
   JwtStrategy = require('passport-jwt').Strategy,
   ExtractJwt = require('passport-jwt').ExtractJwt,
   LocalStrategy = require('passport-local').Strategy,
+  GoogleStrategy = require('passport-google-oauth').OAuth2Strategy,
   db = require('../../../models')
 
 const bcrypt = require('bcrypt')
@@ -30,6 +31,45 @@ passport.use(
         return done(null, user)
       })
   })
+)
+
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: env.GOOGLE_CLIENT_ID,
+      clientSecret: env.GOOGLE_CLIENT_SECRET,
+      callbackURL: env.GOOGLE_CALLBACK_URL,
+    },
+    (accessToken, refreshToken, profile, done) => {
+      profile.emails.map(email => {
+        db.user
+          .findOrCreate({
+            where: {
+              email: email.value,
+            },
+            defaults: {
+              is_active: 1,
+              is_confirmed: 0,
+            },
+          })
+          .then(([user, created]) => {
+            if (created)
+              return db.social_user.create({
+                user_id: user.id,
+                provider_id: profile.id,
+                provider: profile.provider,
+              })
+          })
+          .then(user => {
+            let value = {
+              message: 'Login successful',
+              token: jwt.sign({ user }, jwtToken),
+            }
+            return done(null, value)
+          })
+      })
+    }
+  )
 )
 
 passport.use(
