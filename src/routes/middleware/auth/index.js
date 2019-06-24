@@ -16,6 +16,14 @@ let opts = {
   secretOrKey: jwtToken,
 }
 
+passport.serializeUser((user, done) => {
+  done(null, user.token)
+})
+
+passport.deserializeUser((id, done) => {
+  done(null, id)
+})
+
 passport.use(
   new JwtStrategy(opts, (jwt_payload, done) => {
     const { user } = jwt_payload

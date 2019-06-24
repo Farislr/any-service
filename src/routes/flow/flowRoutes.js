@@ -1,7 +1,7 @@
 const express = require('express')
 const db = require('../../models')
 const passport = require('passport')
-const { getAll } = require('../../services/crud')
+const { getAll, isIncluded } = require('../../services/crud')
 
 let router = express.Router()
 
@@ -14,19 +14,10 @@ router.use(
   }
 )
 
-router.get('/:id', (req, res) =>
-  getAll(req, res, db.flow, {
-    include: [
-      {
-        model: db.balance,
-        attributes: [],
-        where: {
-          id: req.params.id,
-          user_id: req.user.id,
-        },
-      },
-    ],
-  })
+router.get(
+  '/:id',
+  [isIncluded(undefined, db.balance, 'id'), getAll(db.flow)],
+  (req, res) => res.send(res.locals.val)
 )
 
 router.post('/:id/add', (req, res) => {

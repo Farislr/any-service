@@ -3,6 +3,7 @@ const passport = require('passport')
 const db = require('../../models')
 const { hashPassword } = require('./helper')
 const { create } = require('../../services/crud')
+const webSocket = require('ws')
 
 const router = express.Router()
 
@@ -31,6 +32,21 @@ router.get(
 router.post('/register', [hashPassword], (req, res) =>
   create(req, res, db.user, { is_active: 1, is_confirmed: 0, salt: req.salt })
 )
+router.get('/ws', (req, res) => {
+  var ws = new webSocket('ws://localhost:3000')
+
+  ws.onopen = function() {
+    console.log('websocket is connected ...')
+    // sending a send event to websocket server
+    ws.send('connected')
+  }
+  // event emmited when receiving message
+  ws.onmessage = function(ev) {
+    console.log(ev)
+  }
+
+  res.send('ws')
+})
 
 router.post(
   '/login',

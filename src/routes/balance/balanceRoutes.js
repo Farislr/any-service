@@ -1,7 +1,13 @@
 const express = require('express')
 const db = require('../../models')
 const passport = require('passport')
-const { getAll, getOne, update, create } = require('../../services/crud')
+const {
+  getAll,
+  getOne,
+  update,
+  create,
+  isUser,
+} = require('../../services/crud')
 
 let router = express.Router()
 
@@ -14,23 +20,15 @@ router.use(
   }
 )
 
-router.get('/', (req, res) =>
-  getAll(req, res, db.balance, {
-    where: {
-      user_id: req.user.id,
-    },
-  })
+router.get('/', [isUser(), getAll(db.balance)], (req, res) =>
+  res.send(res.locals.val)
 )
 
-router.get('/:id', (req, res) =>
+router.get(
+  '/:id',
   getOne(
-    req,
-    res,
     db.balance,
     {
-      where: {
-        user_id: req.user.id,
-      },
       include: [
         {
           model: db.flow,
@@ -39,7 +37,8 @@ router.get('/:id', (req, res) =>
       ],
     },
     'Balance not found'
-  )
+  ),
+  (req, res) => res.send(res.locals.val)
 )
 
 router.patch('/:id/update-amount', (req, res) => update(req, res, db.balance))
