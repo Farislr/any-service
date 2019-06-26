@@ -21,14 +21,18 @@ const isUser = (options: { where: {} } = {}) => {
 const whereIs = (req, ...keys) => {
   const { params, query, user } = req
   let where = {}
-  keys.map(key => {
-    if (params[key]) Object.assign(where, { [key]: params[key] })
-    if (query[key]) Object.assign(where, { [key]: query[key] })
+  keys.map((key: []) => {
+    if (params[key]) Object.assign(where, { [(key: any)]: params[key] })
+    if (query[key]) Object.assign(where, { [(key: any)]: query[key] })
   })
   return where
 }
 
-const isIncluded = (options = {}, associated_model, ...keys) => {
+const isIncluded = (
+  options: { include: any } = {},
+  associated_model: [],
+  ...keys: []
+) => {
   return (req: $Request, res: $Response, next: any) => {
     const { params, query, user } = req
     let where = whereIs(req, keys)
@@ -58,7 +62,7 @@ const checkOptions = (res, options) => {
 export default {
   isUser,
   isIncluded,
-  getAll(model: any, options = {}) {
+  getAll(model: any, options: {} = {}) {
     return (req: $Request, res: $Response, next: any) => {
       options = checkOptions(res, options)
       options = Object.assign(options, {
@@ -77,7 +81,7 @@ export default {
       })
     }
   },
-  getOne(model: any, options: { where: {} } = {}, err) {
+  getOne(model: any, options: {} = {}, err) {
     return (req: $Request, res: $Response, next: any) => {
       options = checkOptions(res, options)
       options = Object.assign(options, {
