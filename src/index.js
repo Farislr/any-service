@@ -1,6 +1,9 @@
+// @flow
+
 require('dotenv').config()
 import express from 'express'
-// var express = require('express')
+import type { $Request, $Response } from 'express'
+
 var cookieParser = require('cookie-parser')
 var logger = require('morgan')
 var passport = require('passport')
@@ -11,7 +14,7 @@ const cubeJsServerCore = require('@cubejs-backend/server-core')
 
 var app = express()
 
-var coreRoutes = require('./routes')
+import coreRoutes from './routes'
 
 app.use(logger('dev'))
 app.use(express.json())
@@ -35,12 +38,8 @@ cubeJsServerCore.create().initApp(app)
 
 app.use('/', coreRoutes)
 
-app.use('*', (req, res) => res.sendStatus(404))
+app.use('*', (req: $Request, res: $Response) => res.sendStatus(404))
 
 var port = process.env.PORT
-
-app.listen(port, () => {
-  console.log(`Server started on port ${port}`)
-})
 
 module.exports = app

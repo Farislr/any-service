@@ -2,7 +2,7 @@ const express = require('express')
 const passport = require('passport')
 const db = require('../../models')
 const { hashPassword } = require('./helper')
-const { create } = require('../../services/crud')
+const { create } = require('../../services/crud').default
 const webSocket = require('ws')
 
 const router = express.Router()
@@ -56,4 +56,4 @@ router.post(
   }
 )
 
-module.exports = router
+export default router

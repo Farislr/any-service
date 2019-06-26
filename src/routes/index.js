@@ -1,14 +1,10 @@
-const express = require('express')
-const services = require('require-all')({
-  dirname: __dirname,
-  recursive: true,
-})
+import { Router } from 'express'
+import * as routes from './core'
 
-const router = express.Router()
+const router = Router()
 
-router.use('/user', services.user.userRoutes)
-router.use('/balance', services.balance.balanceRoutes)
-router.use('/flow', services.flow.flowRoutes)
-router.use('/promotion', services.promotion.promotionRoutes)
+router.use('/user', routes.user)
+router.use('/balance', routes.balance)
+router.use('/flow', routes.flow)
 
-module.exports = router
+export default router

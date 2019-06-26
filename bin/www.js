@@ -1,10 +1,10 @@
-#!/usr/bin/env node
+// #!/usr/bin/env node
 
 /**
  * Module dependencies.
  */
 
-var app = require('../app')
+var app = require('..')
 var debug = require('debug')('any-services:server')
 var http = require('http')
 const webSocket = require('ws')

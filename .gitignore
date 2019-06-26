@@ -1,4 +1,3 @@
-/node_modules/
 .vscode
 
 # Logs
@@ -36,8 +35,10 @@ bower_components
 build/Release
 
 # Dependency directories
-node_modules/
-jspm_packages/
+/node_modules/
+/jspm_packages/
+/flow-typed
+
 
 # TypeScript v1 declaration files
 typings/
@@ -63,4 +64,6 @@ typings/
 # next.js build output
 .next
 deploy_key
-flow-typed
+
+# distributable
+dist

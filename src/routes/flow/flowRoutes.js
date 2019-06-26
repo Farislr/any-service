@@ -1,7 +1,7 @@
 const express = require('express')
 const db = require('../../models')
 const passport = require('passport')
-const { getAll, isIncluded } = require('../../services/crud')
+const { getAll, isIncluded } = require('../../services/crud').default
 
 let router = express.Router()
 
@@ -47,4 +47,4 @@ router.post('/:id/add', (req, res) => {
     })
 })
 
-module.exports = router
+export default router

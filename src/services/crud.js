@@ -1,9 +1,10 @@
 // @flow
 
-const paginate = require('express-paginate')
+import { getArrayPages } from 'express-paginate'
+import type { $Request, $Response } from 'express'
 
-const isUser = (options = {}) => {
-  return (req, res, next) => {
+const isUser = (options: { where: {} } = {}) => {
+  return (req: $Request, res: $Response, next: any) => {
     if (req.user) {
       Object.assign(options, {
         where: {
@@ -28,7 +29,7 @@ const whereIs = (req, ...keys) => {
 }
 
 const isIncluded = (options = {}, associated_model, ...keys) => {
-  return (req, res, next) => {
+  return (req: $Request, res: $Response, next: any) => {
     const { params, query, user } = req
     let where = whereIs(req, keys)
     if (req.user) where.user_id = user.id
@@ -54,11 +55,11 @@ const checkOptions = (res, options) => {
   else return (res.locals.options = options)
 }
 
-module.exports = {
+export default {
   isUser,
   isIncluded,
-  getAll(model, options = {}) {
-    return (req, res, next) => {
+  getAll(model: any, options = {}) {
+    return (req: $Request, res: $Response, next: any) => {
       options = checkOptions(res, options)
       options = Object.assign(options, {
         limit: req.query.limit,
@@ -70,14 +71,14 @@ module.exports = {
           data: out.rows,
           item_count: out.count,
           pages_count,
-          pages: paginate.getArrayPages(req)(3, pages_count, req.query.page),
+          pages: getArrayPages(req)(3, pages_count, req.query.page),
         }
         return next()
       })
     }
   },
-  getOne(model, options = {}, err) {
-    return (req, res, next) => {
+  getOne(model: any, options: { where: {} } = {}, err) {
+    return (req: $Request, res: $Response, next: any) => {
       options = checkOptions(res, options)
       options = Object.assign(options, {
         where: {

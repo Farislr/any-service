@@ -7,7 +7,7 @@ const {
   update,
   create,
   isUser,
-} = require('../../services/crud')
+} = require('../../services/crud').default
 
 let router = express.Router()
 
@@ -45,4 +45,4 @@ router.patch('/:id/update-amount', (req, res) => update(req, res, db.balance))
 
 router.post('/', (req, res) => create(req, res, db.balance, { amount: 0 }))
 
-module.exports = router
+export default router
