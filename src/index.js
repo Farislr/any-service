@@ -43,6 +43,8 @@ app.use('*', (req: $Request, res: $Response) => res.sendStatus(404))
 
 var port = process.env.PORT
 
-module.exports.handler = serverless(app)
+export let handler = serverless(app)
 
-module.exports = app
+// module.exports = app
+
+export default app

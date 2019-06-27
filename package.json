@@ -4,14 +4,15 @@
   "private": true,
   "scripts": {
     "dev": "nodemon start.js",
-    "build": "rm -rf dist && babel src -d dist",
-    "test": "echo testing ..."
+    "build": "webpack",
+    "test": "echo testing ...",
+    "start": "webpack-dev-server"
   },
   "dependencies": {
     "@cubejs-backend/mysql-driver": "^0.9.2",
     "@cubejs-backend/server-core": "^0.9.2",
     "@types/sequelize": "^4.27.49",
-    "bcrypt": "^3.0.6",
+    "bcryptjs": "^2.4.3",
     "connect-flash": "^0.1.1",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
@@ -50,10 +51,13 @@
     "eslint-plugin-prettier": "^3.0.1",
     "flow-bin": "^0.101.1",
     "html-webpack-plugin": "^3.2.0",
+    "serverless-dotenv-plugin": "^2.1.1",
     "serverless-offline": "^5.5.0",
+    "serverless-webpack": "^5.3.1",
     "webpack": "^4.35.0",
     "webpack-cli": "^3.3.5",
     "webpack-dev-server": "^3.7.2",
     "webpack-node-externals": "^1.7.2"
-  }
+  },
+  "description": "My webpack project"
 }

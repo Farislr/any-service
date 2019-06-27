@@ -5,7 +5,7 @@ const passport = require('passport'),
   GoogleStrategy = require('passport-google-oauth').OAuth2Strategy,
   db = require('../../../models')
 
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const { env } = process
 

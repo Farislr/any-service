@@ -8,3 +8,10 @@ flow-typed
 
 # build
 dist
+.webpack
+
+# Environment
+.env
+.env.prod
+
+

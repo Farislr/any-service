@@ -4,7 +4,8 @@
  * Module dependencies.
  */
 
-var app = require('..')
+var app = require('..').default
+// import app from '..'
 var debug = require('debug')('any-services:server')
 var http = require('http')
 const webSocket = require('ws')
@@ -15,7 +16,6 @@ const webSocket = require('ws')
 
 var port = normalizePort(process.env.PORT || '3000')
 app.set('port', port)
-
 /**
  * Create HTTP server.
  */

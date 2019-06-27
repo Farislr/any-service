@@ -62,7 +62,7 @@ functions:
   hello:
     handler: handler.hello
   app:
-    handler: index.handler
+    handler: src/index.handler
     events:
       - http: ANY /
       - http: 'ANY {proxy+}'
@@ -115,3 +115,12 @@ functions:
 
 plugins:
   - serverless-offline
+  - serverless-webpack
+  - serverless-dotenv-plugin
+
+custom:
+  webpack:
+    includeModules:
+      forceInclude:
+        - mysql2
+    packager: 'yarn'
