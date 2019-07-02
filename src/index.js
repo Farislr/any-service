@@ -7,7 +7,7 @@ import serverless from 'serverless-http'
 
 var cookieParser = require('cookie-parser')
 var logger = require('morgan')
-var passport = require('passport')
+import passport from 'passport'
 // var session = require('express-session')
 // var FileStore = require('session-file-store')(session)
 const paginate = require('express-paginate')
@@ -33,7 +33,7 @@ app.use(passport.initialize())
 // app.use(passport.session())
 app.use(paginate.middleware(15, 25))
 
-require('./routes/middleware/auth')
+import './routes/middleware/auth'
 
 cubeJsServerCore.create().initApp(app)
 

@@ -30,6 +30,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 module.exports = {
   mode: 'development',
   target: 'node',
+
+  //   node: false,
   entry: slsw.lib.entries,
 
   //   output: {
@@ -57,19 +59,10 @@ module.exports = {
     ],
   },
 
-  optimization: {
-    splitChunks: {
-      cacheGroups: {
-        vendors: {
-          priority: -10,
-          test: /[\\/]node_modules[\\/]/,
-        },
-      },
+  devtool: 'source-map',
 
-      chunks: 'async',
-      minChunks: 1,
-      minSize: 30000,
-      name: true,
-    },
+  optimization: {
+    // We no not want to minimize our code.
+    minimize: false,
   },
 }

@@ -114,13 +114,14 @@ functions:
 #       Value: "Some output value"
 
 plugins:
-  - serverless-offline
   - serverless-webpack
   - serverless-dotenv-plugin
+  - serverless-offline
 
 custom:
   webpack:
     includeModules:
       forceInclude:
         - mysql2
+        - '@types/sequelize'
     packager: 'yarn'

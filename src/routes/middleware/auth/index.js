@@ -2,8 +2,9 @@ const passport = require('passport'),
   JwtStrategy = require('passport-jwt').Strategy,
   ExtractJwt = require('passport-jwt').ExtractJwt,
   LocalStrategy = require('passport-local').Strategy,
-  GoogleStrategy = require('passport-google-oauth').OAuth2Strategy,
-  db = require('../../../models')
+  GoogleStrategy = require('passport-google-oauth').OAuth2Strategy
+
+const db = require('../../../models')
 
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
