@@ -25,6 +25,13 @@ provider:
   stage: dev
   region: ap-southeast-1
 
+  vpc:
+    securityGroupIds:
+      - sg-087a9f6e
+    subnetIds:
+      - subnet-0ae75591fb0735d5f
+      - subnet-0d824fc680024867d
+
 # you can overwrite defaults here
 #  stage: dev
 #  region: us-east-1
