@@ -14,5 +14,6 @@ dist
 .env
 .env.production
 .env.development
+deploy_key
 
 
