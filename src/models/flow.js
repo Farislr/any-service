@@ -3,6 +3,7 @@ module.exports = (sequelize, DataTypes) => {
   const flow = sequelize.define(
     'flow',
     {
+      balance_id: DataTypes.INTEGER,
       description: DataTypes.STRING,
       credit: DataTypes.FLOAT,
       debit: DataTypes.FLOAT,
@@ -11,9 +12,8 @@ module.exports = (sequelize, DataTypes) => {
   )
   flow.associate = function(models) {
     // associations can be defined here
-    flow.belongsToMany(models.balance, {
-      through: models.balance_flow,
-      foreignKey: 'flow_id',
+    flow.belongsTo(models.balance, {
+      foreignKey: 'balance_id',
     })
   }
   return flow

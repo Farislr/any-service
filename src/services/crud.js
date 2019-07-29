@@ -3,15 +3,22 @@
 import { getArrayPages } from 'express-paginate'
 import type { $Request, $Response } from 'express'
 
-const isUser = (options: { where: {} } = {}) => {
+const isUser = (options: { where: {} } = {}, extended: boolean = true) => {
   return (req: $Request, res: $Response, next: any) => {
-    if (req.user) {
-      Object.assign(options, {
-        where: {
-          user_id: req.user.id,
-        },
-      })
-      checkOptions(res, options)
+    const { method, user } = req
+    if (user) {
+      if (method === 'POST' || method === 'PATCH') {
+        payload(req, res, { user_id: user.id })
+      }
+
+      if (extended) {
+        Object.assign(options, {
+          where: {
+            user_id: user.id,
+          },
+        })
+        checkOptions(res, options)
+      }
       return next()
     }
     return next()
@@ -29,7 +36,7 @@ const whereIs = (req, ...keys) => {
 }
 
 const isIncluded = (
-  options: { include: any } = {},
+  options: { include: any, where: {} } = {},
   associated_model: [],
   ...keys: []
 ) => {
@@ -59,10 +66,17 @@ const checkOptions = (res, options) => {
   else return (res.locals.options = options)
 }
 
+const payload = (req, res, data = {}) => {
+  const { body } = req
+  Object.assign(body, data)
+  if (res.locals.payload) return Object.assign(res.locals.payload, body)
+  else return (res.locals.payload = body)
+}
+
 export default {
   isUser,
   isIncluded,
-  getAll(model: any, options: {} = {}) {
+  getAll(model: any, options: { where: {} } = {}) {
     return (req: $Request, res: $Response, next: any) => {
       options = checkOptions(res, options)
       options = Object.assign(options, {
@@ -81,7 +95,7 @@ export default {
       })
     }
   },
-  getOne(model: any, options: {} = {}, err) {
+  getOne(model: any, options: { where: {} } = {}, err: String) {
     return (req: $Request, res: $Response, next: any) => {
       options = checkOptions(res, options)
       options = Object.assign(options, {
@@ -96,12 +110,16 @@ export default {
       })
     }
   },
-  create(req, res, model, data = {}, options = {}) {
-    data = Object.assign(data, req.body)
-    model.create(data, options).then(out => {
-      if (!out) return res.status(400).send('err')
-      return res.send(out)
-    })
+  create(model, options = {}) {
+    return (req: $Request, res: $Response, next: any) => {
+      let body = payload(req, res)
+      options = checkOptions(res, options)
+      model.create(body, options).then(out => {
+        if (!out) return res.status(400).send('err')
+        res.locals.val = out
+        return next()
+      })
+    }
   },
   update(req, res, model, options = {}) {
     const { body } = req

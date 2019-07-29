@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "nodemon start.js",
-    "build": "webpack",
-    "test": "echo testing ...",
-    "start": "webpack-dev-server"
+    "build": "sls webpack",
+    "start": "sls offline",
+    "deploy": "sls deploy",
+    "test": "echo testing ..."
   },
   "dependencies": {
     "@cubejs-backend/mysql-driver": "^0.9.2",

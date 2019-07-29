@@ -8,6 +8,9 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      balance_id: {
+          type: Sequelize.INTEGER
+      },
       description: {
         type: Sequelize.STRING
       },

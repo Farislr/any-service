@@ -32,7 +32,6 @@ router.get(
       include: [
         {
           model: db.flow,
-          through: { attributes: [] },
         },
       ],
     },
@@ -43,6 +42,8 @@ router.get(
 
 router.patch('/:id/update-amount', (req, res) => update(req, res, db.balance))
 
-router.post('/', (req, res) => create(req, res, db.balance, { amount: 0 }))
+router.post('/', [isUser(undefined, false), create(db.balance)], (req, res) =>
+  res.send(res.locals.val)
+)
 
 export default router

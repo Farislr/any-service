@@ -14,8 +14,7 @@ module.exports = (sequelize, DataTypes) => {
   )
   balance.associate = function(models) {
     // associations can be defined here
-    balance.belongsToMany(models.flow, {
-      through: models.balance_flow,
+    balance.hasMany(models.flow, {
       foreignKey: 'balance_id',
     })
     balance.belongsTo(models.user, { foreignKey: 'user_id' })
