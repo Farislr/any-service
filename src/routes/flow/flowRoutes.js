@@ -1,7 +1,7 @@
 const express = require('express')
 const db = require('../../models')
 const passport = require('passport')
-const { getAll, isIncluded } = require('../../services/helpers').default
+const { whereIs, paginate } = require('../../services/helpers').default
 
 let router = express.Router()
 
@@ -14,20 +14,20 @@ router.use(
   }
 )
 
-router.get(
-  '/:id',
-  [isIncluded(undefined, db.balance, 'id'), getAll(db.flow)],
-  (req, res) => res.send(res.locals.val)
-)
+router.get('/:balance_id', async (req, res) => {
+  const { params } = req
+  const flows = await paginate(req, db.flow, {
+    where: { balance_id: params.balance_id },
+    include: [{ model: db.balance, ...whereIs(req), attributes: [] }],
+  })
+  return res.send(flows)
+})
 
-router.post('/:id/add', (req, res) => {
+router.post('/:balance_id/add', async (req, res) => {
   const { body, params } = req
-  db.balance
+  await db.balance
     .findOne({
-      where: {
-        id: params.id,
-        user_id: req.user.id,
-      },
+      ...whereIs(req, { id: params.balance_id }),
     })
     .then(balance => {
       if (!balance)
@@ -39,7 +39,8 @@ router.post('/:id/add', (req, res) => {
           debit: body.debit,
           credit: body.credit,
         })
-        .then(flow => {
+        .then(async flow => {
+          await balance.addFlow(flow.id)
           return res.send(flow)
         })
     })

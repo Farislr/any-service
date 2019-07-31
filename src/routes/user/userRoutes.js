@@ -3,7 +3,6 @@ import express from 'express'
 const passport = require('passport')
 const db = require('../../models')
 const { hashPassword } = require('./helper')
-const { create } = require('../../services/helpers').default
 const webSocket = require('ws')
 
 const router = express.Router()
