@@ -1,7 +1,7 @@
 const express = require('express')
 const db = require('../../models')
 const passport = require('passport')
-const { getAll, isIncluded } = require('../../services/crud').default
+const { getAll, isIncluded } = require('../../services/helpers').default
 
 let router = express.Router()
 
@@ -33,16 +33,14 @@ router.post('/:id/add', (req, res) => {
       if (!balance)
         return res.status(400).json({ message: 'Balance not found' })
 
-      db.flow
+      return db.flow
         .create({
           description: body.description,
           debit: body.debit,
           credit: body.credit,
         })
         .then(flow => {
-          balance.addFlows(flow.id).then(() => {
-            return res.send(flow)
-          })
+          return res.send(flow)
         })
     })
 })

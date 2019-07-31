@@ -5,8 +5,8 @@ module.exports = (sequelize, DataTypes) => {
     {
       balance_id: DataTypes.INTEGER,
       description: DataTypes.STRING,
-      credit: DataTypes.FLOAT,
-      debit: DataTypes.FLOAT,
+      credit: { type: DataTypes.FLOAT, defaultValue: 0 },
+      debit: { type: DataTypes.FLOAT, defaultValue: 0 },
     },
     {}
   )

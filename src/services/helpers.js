@@ -73,9 +73,28 @@ const payload = (req, res, data = {}) => {
   else return (res.locals.payload = body)
 }
 
+const paginate = (req: any, model: any, options: any = {}) => {
+  return new Promise<void>((resolve: any, reject: any) => {
+    options = Object.assign(options, {
+      limit: req.query.limit,
+      offset: req.skip,
+    })
+    model.findAndCountAll(options).then(out => {
+      let pages_count = Math.ceil(out.count / req.query.limit)
+      resolve({
+        data: out.rows,
+        item_count: out.count,
+        pages_count,
+        pages: getArrayPages(req)(3, pages_count, req.query.page),
+      })
+    })
+  })
+}
+
 export default {
   isUser,
   isIncluded,
+  paginate,
   getAll(model: any, options: { where: {} } = {}) {
     return (req: $Request, res: $Response, next: any) => {
       options = checkOptions(res, options)

@@ -1,8 +1,9 @@
-const express = require('express')
+// const express = require('express')
+import express from 'express'
 const passport = require('passport')
 const db = require('../../models')
 const { hashPassword } = require('./helper')
-const { create } = require('../../services/crud').default
+const { create } = require('../../services/helpers').default
 const webSocket = require('ws')
 
 const router = express.Router()
@@ -29,9 +30,13 @@ router.get(
   }
 )
 
-router.post('/register', [hashPassword], (req, res) =>
-  create(req, res, db.user, { is_active: 1, is_confirmed: 0, salt: req.salt })
-)
+router.post('/register', [hashPassword], async (req, res) => {
+  let data = { ...req.body }
+  data = Object.assign(data, { is_active: 1, is_confirmed: 0, salt: req.salt })
+  const user = await db.user.create(data)
+  return res.send(user)
+})
+
 router.get('/ws', (req, res) => {
   var ws = new webSocket('ws://localhost:3000')
 

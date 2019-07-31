@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
       name: DataTypes.STRING,
       user_id: DataTypes.INTEGER,
       description: DataTypes.STRING,
-      amount: DataTypes.FLOAT,
+      amount: { type: DataTypes.FLOAT, defaultValue: 0 },
     },
     {
       underscored: true,
